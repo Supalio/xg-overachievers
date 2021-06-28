@@ -1,0 +1,34 @@
+{
+  "name": "xg-overachievers",
+  "version": "1.0.0",
+  "description": "Stats on players xG (expected goals)",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Supalio/xg-overachievers.git"
+  },
+  "keywords": [
+    "xG",
+    "expected goals",
+    "football"
+  ],
+  "author": "Supalio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Supalio/xg-overachievers/issues"
+  },
+  "homepage": "https://github.com/Supalio/xg-overachievers#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.10",
+    "puppeteer": "^10.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.28.1",
+    "@typescript-eslint/parser": "^4.28.1",
+    "eslint": "^7.29.0",
+    "eslint-config-google": "^0.14.0"
+  }
+}
