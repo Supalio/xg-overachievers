@@ -5,9 +5,9 @@ async function fetchPlayerStats(playerId, page) {
   const url = `https://understat.com/player/${playerId}`;
 
   await page.goto(url)
-      .catch((err) => {
-        console.error(`Error when fetching data for player ${playerId} : ${err}`);
-      });
+    .catch((err) => {
+      console.error(`Error when fetching data for player ${playerId} : ${err}`);
+    });
   const $data = cheerio.load(await page.content());
 
   const playerName = $data('.header-wrapper').text().trim();
@@ -16,7 +16,7 @@ async function fetchPlayerStats(playerId, page) {
   const xGDataSplit = xGData.split(/[+-]/);
   const xG = parseFloat(xGDataSplit[0]) || 0;
   const xGVariation = (xGData.includes('-') ? -xGDataSplit[1] : parseFloat(xGDataSplit[1])) || 0;
-  const goals = parseInt($data('#player-groups .table-total td:nth-child(6)').text().trim()) || 0;
+  const goals = parseInt($data('#player-groups .table-total td:nth-child(6)').text().trim(), 10) || 0;
 
   return {
     id: playerId,
@@ -35,7 +35,7 @@ async function main() {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 10; i += 1) {
     const playerId = Math.floor(Math.random() * 10000);
     playerData.push(await fetchPlayerStats(playerId, page));
   }
