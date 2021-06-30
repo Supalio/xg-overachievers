@@ -8,14 +8,22 @@ const GOALS_LENGTH = 5;
 const XG_LENGTH = 6;
 const VARIATION_LENGTH = 9;
 
+const formatStringWithMaxLength = (str, maxLength) => {
+  let formattedString = str;
+  if (str.length > maxLength) {
+    formattedString = str.slice(0, maxLength - 3).concat('...');
+  }
+  return formattedString.padEnd(maxLength, ' ').slice(0, maxLength);
+};
+
 class PlayerFormatter {
   static playerString(player) {
     const sep = `${chalk.yellow('|')}`;
-    const id = player.id.toString().padEnd(ID_LENGTH, ' ');
-    const name = player.name.padEnd(NAME_LENGTH, ' ').slice(0, NAME_LENGTH);
-    const team = player.team.padEnd(TEAM_LENGTH, ' ').slice(0, TEAM_LENGTH);
-    const goals = player.stats.goals.toString().padEnd(GOALS_LENGTH, ' ');
-    const xG = player.stats.xG.toString().padEnd(XG_LENGTH, ' ');
+    const id = formatStringWithMaxLength(player.id.toString(), ID_LENGTH);
+    const name = formatStringWithMaxLength(player.name, NAME_LENGTH);
+    const team = formatStringWithMaxLength(player.team, TEAM_LENGTH);
+    const goals = formatStringWithMaxLength(player.stats.goals.toString(), GOALS_LENGTH);
+    const xG = formatStringWithMaxLength(player.stats.xG.toString(), XG_LENGTH);
     const variation = (player.stats.xGVariation > 0)
       ? chalk.redBright(player.stats.xGVariation.toString().padEnd(VARIATION_LENGTH, ' '))
       : chalk.greenBright(player.stats.xGVariation.toString().padEnd(VARIATION_LENGTH, ' '));
@@ -40,6 +48,12 @@ ${chalk.yellow(headerLine)}`;
 
   static footerRow() {
     return chalk.yellow(`|${'-'.padEnd(TOTAL_LENGTH, '-')}|`);
+  }
+
+  static printPlayers(players, logFn) {
+    logFn(this.headerRow());
+    players.forEach((player) => logFn(this.playerString(player)));
+    logFn(this.footerRow());
   }
 }
 

@@ -62,9 +62,7 @@ async function main() {
 
   await browser.close();
 
-  console.log(PlayerFormatter.headerRow());
-  playerData.forEach((player) => console.log(PlayerFormatter.playerString(player)));
-  console.log(PlayerFormatter.footerRow());
+  PlayerFormatter.printPlayers(playerData, console.log);
 
   console.timeEnd('Fetching players ');
 }
