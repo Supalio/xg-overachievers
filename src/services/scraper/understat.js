@@ -1,5 +1,12 @@
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
+const ProgressBar = require('progress');
+
+const Player = require('../../models/Player');
+const PlayerFormatter = require('../player_formatter');
+
+// TODO Put this into a config file
+const NB_PLAYERS_TO_FETCH = 10;
 
 async function fetchPlayerStats(playerId, page) {
   const url = `https://understat.com/player/${playerId}`;
@@ -22,28 +29,44 @@ async function fetchPlayerStats(playerId, page) {
     id: playerId,
     name: playerName,
     team,
-    goals,
-    xG,
-    xGVariation,
+    stats: {
+      goals,
+      xG,
+      xGVariation,
+    },
   };
 }
 
 async function main() {
-  const start = new Date();
+  console.time('Fetching players ');
   const playerData = [];
 
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
-  for (let i = 0; i < 10; i += 1) {
+  const bar = new ProgressBar('[:bar] - :percent - :etas', {
+    total: NB_PLAYERS_TO_FETCH,
+    width: 120,
+    head: '>',
+    incomplete: ' ',
+    clear: true,
+  });
+
+  for (let i = 0; i < NB_PLAYERS_TO_FETCH; i += 1) {
     const playerId = Math.floor(Math.random() * 10000);
-    playerData.push(await fetchPlayerStats(playerId, page));
+    const data = await fetchPlayerStats(playerId, page);
+    const player = new Player(data.id, data.name, data.team, data.stats);
+    playerData.push(player);
+    bar.tick();
   }
 
   await browser.close();
 
-  console.log(playerData);
-  console.log(new Date() - start);
+  console.log(PlayerFormatter.headerRow());
+  playerData.forEach((player) => console.log(PlayerFormatter.playerString(player)));
+  console.log(PlayerFormatter.footerRow());
+
+  console.timeEnd('Fetching players ');
 }
 
 main();
