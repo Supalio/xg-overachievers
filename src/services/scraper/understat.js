@@ -2,8 +2,8 @@ const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 const ProgressBar = require('progress');
 
-const Player = require('../../models/Player');
-const PlayerFormatter = require('../player_formatter');
+const Player = require('../../models/player');
+const PlayerFormatter = require('../playerFormatter');
 
 // TODO Put this into a config file
 const NB_PLAYERS_TO_FETCH = 10;
