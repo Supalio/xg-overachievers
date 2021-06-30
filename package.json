@@ -2,7 +2,7 @@
   "name": "xg-overachievers",
   "version": "1.0.0",
   "description": "Stats on players xG (expected goals)",
-  "main": "src/index.js",
+  "main": "src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/Supalio/xg-overachievers#readme",
   "dependencies": {
+    "bluebird": "^3.7.2",
     "chalk": "^4.1.1",
     "cheerio": "^1.0.0-rc.10",
     "progress": "^2.0.1",
